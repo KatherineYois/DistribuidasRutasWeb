@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>RutaBusAQP</title>
+    <meta charset="utf-8"/>
+    <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700|Allerta' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="css/rutabusaqp.css"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+  </head>
+  <body>
+    <section id="portada" class="portada background"> <!-- portada -->
+      <header id="header" class="header contenedor"> <!-- header -->
+        <figure class="logotipo"> 
+          <img src="images/logo.png" srcset="images/logo.png 1x, images/logo.png 2x" width="200" height="200" alt="Logo RutaBusAQP"/> 
+        </figure>
+        <span class="burguer-button icon-menu" id="burguer-button"></span>
+        <nav class="menu" id="menu"> <!-- menu -->
+          <ul>
+            <li>
+              <a href="home.html">Home</a>
+            </li>
+            <li>
+              <a href="" id="btnLogin">Iniciar Sesión</a>
+            </li>
+            <li>
+              <a href="" id="btnLogout" style="display:none;">Cerrar Sesión</a>
+            </li>
+          </ul>
+        </nav>
+      </header>
+        <div class="contenedor">
+          <h1 class="titulo">RutaBusAQP</h1><!-- titulo -->
+          <h3 class="title-a">Guiando tu destino</h3><!-- resumen -->
+          <a class="button" href="#buses">Conoce mas</a><!-- boton -->
+        </div>
+    </section>
+    <section id="buses" class="buses contenedor"> 
+      <h2>Nuestros Servicios</h2>
+      <article class="bus"> 
+        <img class="derecha" data-src="images/mapa.png|images/mapa.png"  alt="Mapa" width="200"/>
+        <div class="contenedor-bus-a">
+          <h3 class="title-b">ENCUENTRA TU RUTA</h3>
+          <ol>
+            <li>Selecciona tu destino</li>
+            <li>Selecciona cuanto deseas caminar</li>
+            <li>Sigue la ruta marcada en el mapa</li>
+          </ol>
+        </div>
+      </article>
+      <article class="bus b"> <!-- guitarra 2 -->
+        <img class="izquierda" data-src="images/info2.png|images/info2.png" alt="Informacion" width="200"/>
+        <div class="contenedor-bus-b">
+        <br><br/>
+          <h3 class="title-b">INFORMACION</h3>
+          <ol>
+            <li>Informacion de la unidad</li>
+            <li>Informacion de rutas alternativas</li>
+          </ol>
+        </div>
+      </article>
+    </section>
+    <footer class="footer">
+      <div class="contenedor">
+        <div class="contacto">
+          
+          <a><strong>Descarga tu app: </strong></a>
+          <img data-src="images/android.png" width="50" alt="logotipo blanco"/>
+        </div>
+        <form class="formulario">
+          <div class="Isur"> 
+              <a><strong>Curso Distribuidas</strong></a>
+              <img data-src="images/blanco.png" width="300" alt="logotipo blanco"/>
+          </div>
+        </form>
+      </div>
+    </footer>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.7/hammer.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/blazy/1.5.4/blazy.min.js"></script>
+
+
+
+    <!--FIREBASE inicio-->
+    <!-- Firebase App-->
+    <script src="https://www.gstatic.com/firebasejs/5.5.2/firebase-app.js"></script>
+    <!-- Firebase Autentication-->
+    <script src="https://www.gstatic.com/firebasejs/5.5.2/firebase-auth.js"></script>
+    <!-- Firebase firebase-->
+    <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase.js"></script>
+    <!-- Firebase Firestore-->
+    <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-firestore.js"></script>
+    <!--FIREBASE fin-->
+
+
+    <script src="js/home.js"></script>
+
+    <script>
+      var consulta = window.matchMedia('(max-width: 500px)');
+      consulta.addListener(mediaQuery);
+
+      var $burguerButton = document.getElementById('burguer-button');
+      var $menu = document.getElementById('menu');
+      function toggleMenu(){
+        $menu.classList.toggle('active')
+      };
+      function showMenu(){
+        $menu.classList.add('active');
+      };
+      function hideMenu(){
+        $menu.classList.remove('active');
+      };
+
+      function mediaQuery() {
+        if (consulta.matches) {
+          // si se cumple hagamos esto
+          // console.log('se cumplió la condicion');
+          $burguerButton.addEventListener('touchstart', toggleMenu);
+        } else {
+          $burguerButton.removeEventListener('touchstart', toggleMenu);
+          // si no se cumple hagamos esto
+          // console.log('no se cumplió la condicion');
+        }
+      }
+      mediaQuery();
+
+      // lazy loading
+      var bLazy = new Blazy({
+          selector: 'img'
+      });
+      // $burguerButton.addEventListener('touchstart', toggleMenu);
+
+      // function toggleMenu(){
+      //   $menu.classList.toggle('active')
+      // };
+
+      // Gestos touch
+      var $body = document.body;
+
+      var gestos = new Hammer($body);
+      gestos.on('swipeleft', hideMenu);
+      gestos.on('swiperight', showMenu);
+    </script>
+  </body>
+</html>

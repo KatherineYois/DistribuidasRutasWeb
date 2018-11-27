@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>RutaBusAQP</title>
+    <meta charset="utf-8"/>
+    <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700|Allerta' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="css/rutabusaqp.css"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+  </head>
+  <body>
+    <section id="portada" class="portada background"> <!-- portada -->
+      <header id="header" class="header contenedor"> <!-- header -->
+        <figure class="logotipo"> <!-- logotipo -->
+          <img src="images/logo.png" srcset="images/logo.png 1x, images/logo.png 2x" width="200" height="200" alt="Invie logotipo"/> 
+        </figure>
+        <span class="burguer-button icon-menu" id="burguer-button"></span>
+        <nav class="menu" id="menu"> <!-- menu -->
+          <ul>
+            <li>
+              <a href="home.html">Home</a>
+            </li>
+          </ul>
+        </nav>
+      </header>
+      <div class="contenedor">
+        <h1 class="titulo">RutaBusAQP</h1><!-- titulo -->
+        <h3 class="title-a">Guiando tu destino</h3><!-- resumen -->
+        <a class="button" href="#buses">Conoce mas</a><!-- boton -->
+      </div>
+    </section>
+    <section id="buses" class="buses contenedor"> <!-- guitarras -->
+      <h2>Operador</h2><!-- titulo -->
+      <h3>Ruta</h3>  
+      <article class="bus"> <!-- guitarra 1 -->
+        <img class="derecha" data-src="images/rutas.jpg|images/rutas.jpg"  alt="Guitarra Invie Acustica" width="200"/>
+        <div class="contenedor-bus-a">
+          <h3 >Ingrese los datos de la Empresa de Transporte</h3>
+          
+            <ul>
+              Alias: <li><input type="text" name="ralias" id="idAlias"><br></li>
+              Ruta: <li><input type="text" name="rruta" id="idRuta"><br></li>
+              Codigo Web: <li><input type="text" name="rcodigoweb" id="idCodWeb"><br></li>
+              Vigencia Inicio: <li><input type="date" name="rvigenciainicio" id="idVigenciaInicio"><br></li>
+              Vigencia Fin: <li><input type="date" name="rvigenciafin" id="idVigenciaFin"><br></li> 
+              Imagen: <li><input type="text" name="rimagen" id="idImagen"><br></li> 
+              Puntos: <li><input type="text" name="rpuntos" id="idPuntos"><br></li>    
+			     </ul>
+        </div>
+        <div align="center">
+           <button class="button" id="btnInsertar" onclick="insertar()">INSERTAR</button>
+        </div>
+		    
+        <br></br>
+      </article>  
+    </section>
+    <section class="tabla">
+      <div class="contenedor">
+        <table id="idlistarutas">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>ALIAS</th>
+              <th>RUTA</th>
+              <th>CODIGO WEB</th>
+              <th>VIGENCIA INICIO</th>
+              <th>VIGENCIA FIN</th>
+              <th>IMAGEN</th>
+              <th>PUNTOS</th>
+              <th>E</th>
+              <th>A</th>
+            </tr>
+          </thead>
+          <tbody id="contenidoRuta">
+            
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <div align="center">
+      <a href="operadorOpciones.html">ATRAS</a>
+    </div>
+    <br></br>
+    <footer class="footer">
+      <div class="contenedor">
+        <div class="contacto">
+          
+          <a><strong>Descarga tu app: </strong></a>
+          <!-- CAMBIAR TAMAÑO IMAGEN-->
+          <img data-src="images/android.png" width="50" alt="logotipo blanco"/>
+        </div>
+        <form class="formulario">
+          <div class="Isur"> 
+              <a><strong>Curso Distribuidas</strong></a>
+              <img data-src="images/blanco.png" width="300" alt="logotipo blanco"/>
+          </div>
+        </form>
+      </div>
+    </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.7/hammer.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/blazy/1.5.4/blazy.min.js"></script>
+
+    <!--FIREBASE inicio-->
+    <!-- Firebase App-->
+    <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase.js"></script>
+
+    <!-- Firebase Firestore-->
+    <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-firestore.js"></script>
+    
+    <!--FIREBASE fin-->
+
+    <script src="js/operadorRuta.js"></script>
+
+
+
+
+
+    <!--Por Revisar y decidir si se quedara
+      en el proyecto o se eliminara-->
+    <script>
+      var consulta = window.matchMedia('(max-width: 500px)');
+      consulta.addListener(mediaQuery);
+
+      var $burguerButton = document.getElementById('burguer-button');
+      var $menu = document.getElementById('menu');
+      function toggleMenu(){
+        $menu.classList.toggle('active')
+      };
+      function showMenu(){
+        $menu.classList.add('active');
+      };
+      function hideMenu(){
+        $menu.classList.remove('active');
+      };
+
+      function mediaQuery() {
+        if (consulta.matches) {
+          // si se cumple hagamos esto
+          // console.log('se cumplió la condicion');
+          $burguerButton.addEventListener('touchstart', toggleMenu);
+        } else {
+          $burguerButton.removeEventListener('touchstart', toggleMenu);
+          // si no se cumple hagamos esto
+          // console.log('no se cumplió la condicion');
+        }
+      }
+      mediaQuery();
+
+      // lazy loading
+      var bLazy = new Blazy({
+          selector: 'img'
+      });
+      // $burguerButton.addEventListener('touchstart', toggleMenu);
+
+      // function toggleMenu(){
+      //   $menu.classList.toggle('active')
+      // };
+
+      // Gestos touch
+      var $body = document.body;
+
+      var gestos = new Hammer($body);
+      gestos.on('swipeleft', hideMenu);
+      gestos.on('swiperight', showMenu);
+    </script>
+  </body>
+</html>

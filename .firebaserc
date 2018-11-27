@@ -1,0 +1,8 @@
+{
+  "projects": {
+    "RutaBusAQP": "rutabusaqpdb",
+    "rutas": "rutabusaqpdb",
+    "default": "rutabusaqpdb",
+    "buses": "rutabusaqpdb"
+  }
+}
