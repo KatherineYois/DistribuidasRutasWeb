@@ -24,6 +24,11 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
+/*btn Examinar*/
+input[type="file"] {
+    display: none;
+}
+
 .icon-envelope:before {
     content: "\e900";
 }

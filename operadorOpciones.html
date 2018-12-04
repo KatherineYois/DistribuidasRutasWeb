@@ -4,7 +4,7 @@
     <title>RutaBusAQP</title>
     <meta charset="utf-8"/>
     <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700|Allerta' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="css/rutabusaqp.css"/>
+    <link rel="stylesheet" href="css/rutabusaqpcss.css"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
   </head>
   <body>
@@ -17,7 +17,13 @@
         <nav class="menu" id="menu"> <!-- menu -->
           <ul>
             <li>
-              <a href="home.html">Home</a>
+              <a href="home.html" id="btnHome" style="display:none;">Home</a>
+            </li>
+            <li>
+              <a href="" id="btnLogin" >Iniciar Sesión</a>
+            </li>
+            <li>
+              <a href="" id="btnLogout" style="display:none;">Cerrar Sesión</a>
             </li>
           </ul>
         </nav>
@@ -38,10 +44,9 @@
           <h3 class="title-b"></h3>
           <br></br>
           <ol>
-          	<li><a href="operador.html">Ver tus rutas</a></li>
+          	<li><a href="operadorUsuario.html">Ver tus rutas</a></li>
           	<li><a href="operadorEmpTrans.html">Empresa de Transporte</a></li>
             <li><a href="operadorRuta.html">Rutas</a></li>
-
           </ol>
           
         </div>
@@ -66,32 +71,18 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.7/hammer.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/blazy/1.5.4/blazy.min.js"></script>
 
-
-
-
     <!--FIREBASE inicio-->
     <!-- Firebase App-->
     <script src="https://www.gstatic.com/firebasejs/5.5.2/firebase-app.js"></script>
-
     <!-- Firebase Autentication-->
     <script src="https://www.gstatic.com/firebasejs/5.5.2/firebase-auth.js"></script>
-
-    <script>
-      // Initialize Firebase
-      var config = {
-        apiKey: "AIzaSyA5z2ntUcJZQpQeODDPN4F7ru_qdka6Il8",
-        authDomain: "rutabusaqpdb.firebaseapp.com",
-        databaseURL: "https://rutabusaqpdb.firebaseio.com",
-        projectId: "rutabusaqpdb",
-        storageBucket: "rutabusaqpdb.appspot.com",
-        messagingSenderId: "369287037758"
-      };
-    firebase.initializeApp(config);
-    </script>
-    
+    <!-- Firebase firebase-->
+    <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase.js"></script>
+    <!-- Firebase Firestore-->
+    <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-firestore.js"></script>
     <!--FIREBASE fin-->
 
-    <script src="js/operadoropcion.js"></script>
+    <script src="js/operadorOpciones.js"></script>
 
     <script>
       var consulta = window.matchMedia('(max-width: 500px)');

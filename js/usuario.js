@@ -6,7 +6,7 @@ firebase.initializeApp({
 
 var btnLogin = document.getElementById('btnLogin');
 var btnLogout = document.getElementById('btnLogout');
-
+var btnHome = document.getElementById('btnHome');
 
 firebase.auth().onAuthStateChanged(function(user){
 	if(user){
@@ -19,25 +19,7 @@ firebase.auth().onAuthStateChanged(function(user){
 		mostarLogin();
 	}
 });
-/**
-//Para iniciar sesion
-btnLogin.addEventListener("click",function(){
-	event.preventDefault();
 
-	var provider = new firebase.auth.GoogleAuthProvider();
-	provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
-	
-	firebase.auth().signInWithPopup(provider)
-	.then(function(datosUsuario){
-		console.log(datosUsuario)
-		db.collection("Usuario").add({
-	      	uid: datosUsuario.user.uid,
-			displayName: datosUsuario.user.displayName,
-			email: datosUsuario.user.email
-	 }).catch(function(err){
-		console.log(err)
-	})
-});*/
 //Para cerrar sesion
 btnLogout.addEventListener("click",function(){
 	event.preventDefault();
@@ -56,4 +38,5 @@ function mostrarLogout(){
 	console.log("funcion Logout");
 	btnLogout.style.display ="block";
 	btnLogin.style.display = "none";
+	btnHome.style.display = "none";
 }

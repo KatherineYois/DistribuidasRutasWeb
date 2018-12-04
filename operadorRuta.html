@@ -4,7 +4,7 @@
     <title>RutaBusAQP</title>
     <meta charset="utf-8"/>
     <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700|Allerta' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="css/rutabusaqp.css"/>
+    <link rel="stylesheet" href="css/rutabusaqpcss.css"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
   </head>
   <body>
@@ -17,7 +17,13 @@
         <nav class="menu" id="menu"> <!-- menu -->
           <ul>
             <li>
-              <a href="home.html">Home</a>
+              <a href="home.html" id="btnHome" style="display:none;">Home</a>
+            </li>
+            <li>
+              <a href="" id="btnLogin">Iniciar Sesión</a>
+            </li>
+            <li>
+              <a href="" id="btnLogout" style="display:none;">Cerrar Sesión</a>
             </li>
           </ul>
         </nav>
@@ -37,12 +43,26 @@
           <h3 >Ingrese los datos de la Empresa de Transporte</h3>
           
             <ul>
-              Alias: <li><input type="text" name="ralias" id="idAlias"><br></li>
+              Alias: <!--<li><input type="text" name="ralias" id="idAlias"><br></li>-->
+              <li>
+                <select id="idAlias">
+                  <option>
+                  </option>
+                </select>
+              <br></li>
               Ruta: <li><input type="text" name="rruta" id="idRuta"><br></li>
               Codigo Web: <li><input type="text" name="rcodigoweb" id="idCodWeb"><br></li>
-              Vigencia Inicio: <li><input type="date" name="rvigenciainicio" id="idVigenciaInicio"><br></li>
+              Vigencia Inicio: <li><input type="date" name="rvigenciainicio" id="idVigenciaInicio"
+                onclick = "delimitarFechas()" min = "2018-12-03"><br></li>
               Vigencia Fin: <li><input type="date" name="rvigenciafin" id="idVigenciaFin"><br></li> 
-              Imagen: <li><input type="text" name="rimagen" id="idImagen"><br></li> 
+              Imagen: <li><input type="text" name="rimagen" id="idImagen">
+                <label class="button" >...
+                  <input type="file" id="btnExaminar">
+                </label>
+                <div id ="imagen_Ruta">
+                  
+                </div>
+              </li> 
               Puntos: <li><input type="text" name="rpuntos" id="idPuntos"><br></li>    
 			     </ul>
         </div>
@@ -58,7 +78,6 @@
         <table id="idlistarutas">
           <thead>
             <tr>
-              <th>ID</th>
               <th>ALIAS</th>
               <th>RUTA</th>
               <th>CODIGO WEB</th>
@@ -102,21 +121,17 @@
 
     <!--FIREBASE inicio-->
     <!-- Firebase App-->
+    <script src="https://www.gstatic.com/firebasejs/5.5.2/firebase-app.js"></script>
+    <!-- Firebase Autentication-->
+    <script src="https://www.gstatic.com/firebasejs/5.5.2/firebase-auth.js"></script>
+    <!-- Firebase firebase-->
     <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase.js"></script>
-
     <!-- Firebase Firestore-->
     <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-firestore.js"></script>
-    
     <!--FIREBASE fin-->
 
-    <script src="js/operadorRuta.js"></script>
+    <script src="js/operadorRutas.js"></script>
 
-
-
-
-
-    <!--Por Revisar y decidir si se quedara
-      en el proyecto o se eliminara-->
     <script>
       var consulta = window.matchMedia('(max-width: 500px)');
       consulta.addListener(mediaQuery);

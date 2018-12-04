@@ -4,7 +4,6 @@ firebase.initializeApp({
     projectId: "rutabusaqpdb"
 });
 
-
 var db = firebase.firestore();
 
 function insertar(){
@@ -39,15 +38,15 @@ db.collection("EmpresaTransporte").onSnapshot((querySnapshot) => {
         console.log(`${doc.id} => ${doc.data()}`);
         tabla.innerHTML +=`
         <tr>
-          <th>${doc.id}</th>
+          
           <td>${doc.data().Ruc}</td>
           <td>${doc.data().RazonSocial}</td> 	 
           <td>${doc.data().Alias}</td>
           <td>${doc.data().Representante}</td>
           <td>${doc.data().Direccion}</td>
 
-          <td><button onclick="eliminar('${doc.id}')">ELIMINAR</button></td>
-          <td><button onclick="actualizar(
+          <td><button class="button" onclick="eliminar('${doc.id}')">ELIMINAR</button></td>
+          <td><button class="button" onclick="actualizar(
           '${doc.id}',
           '${doc.data().Ruc}',
           '${doc.data().RazonSocial}',
@@ -108,3 +107,50 @@ function actualizar(id,ruc,razonSocial,alias,representante,direccion){
   }  
 }
 
+
+var btnLogin = document.getElementById('btnLogin');
+var btnLogout = document.getElementById('btnLogout');
+var btnHome = document.getElementById('btnHome');
+
+firebase.auth().onAuthStateChanged(function(user){
+  if(user){
+    console.log(user.displayName);
+    console.log(user.email);
+    console.log(user.uid);
+    console.log(user.photoURL)
+    mostrarLogout();
+  }else{
+    mostarLogin();
+  }
+});
+
+//Para cerrar sesion
+btnLogout.addEventListener("click",function(){
+  event.preventDefault();
+  firebase.auth().signOut().then(function(){
+    alert("Cerrar Sesion");
+    location.href = "home.html";
+  })
+});
+
+function mostrarLogin(){
+  console.log("funcion Login");
+  btnLogout.style.display ="none";
+  btnLogin.style.display = "block";
+}
+function mostrarLogout(){
+  console.log("funcion Logout");
+  btnLogout.style.display ="block";
+  btnLogin.style.display = "none";
+  btnHome.style.display = "none";
+}
+
+
+//VALIDACIONES
+//RUC
+function soloNumeros(e){
+  var teclaNumero = window.event ? window.event.keyCode: e.which;
+  if((teclaNumero ==8 )||(teclaNumero == 46))
+    return true;
+  return /\d/.test(String.fromCharCode(teclaNumero));
+}
