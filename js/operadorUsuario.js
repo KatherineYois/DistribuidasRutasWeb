@@ -8,19 +8,19 @@ firebase.initializeApp({
 var btnLogin = document.getElementById('btnLogin');
 var btnLogout = document.getElementById('btnLogout');
 var btnHome = document.getElementById('btnHome');
+var db = firebase.firestore();
 
 firebase.auth().onAuthStateChanged(function(user){
 	if(user){
-		console.log(user.displayName);
-		console.log(user.email);
-		console.log(user.uid);
-		console.log(user.photoURL)
+		var displayName = user.displayName;
+		var email = user.email;
+		var uid = user.uid;
+		var photoURL = user.photoURL;
 		mostrarLogout();
 	}else{
 		mostarLogin();
 	}
 });
-
 //Para cerrar sesion
 btnLogout.addEventListener("click",function(){
 	event.preventDefault();

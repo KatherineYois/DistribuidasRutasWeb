@@ -17,7 +17,6 @@ firebase.auth().onAuthStateChanged(function(user){
 		console.log(user.email);
 		console.log(user.uid);
 		mostrarLogout();
-
 		if(operadores.includes(user.email)){
 			location.href = "operadorOpciones.html";
 		}else{
@@ -36,11 +35,11 @@ btnLogin.addEventListener("click",function(){
 	firebase.auth().signInWithPopup(provider)
 	.then(function(datosUsuario){
 		console.log(datosUsuario)
-			var uid = datosUsuario.user.uid;
-	    	var displayName = datosUsuario.user.displayName;
-	    	var email = datosUsuario.user.email;
-	    	var photourl = datosUsuario.user.photoURL;
-	    	agregarUsuario(uid,displayName,email,photourl);
+		var uid = datosUsuario.user.uid;
+    	var displayname = datosUsuario.user.displayName;
+    	var email = datosUsuario.user.email;
+    	var photourl = datosUsuario.user.photoURL;
+    	agregarUsuario(uid,displayname,email,photourl);
 	 }).catch(function(err){
 		console.log(err)
 	})

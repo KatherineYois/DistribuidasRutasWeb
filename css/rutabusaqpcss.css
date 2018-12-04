@@ -29,6 +29,12 @@ input[type="file"] {
     display: none;
 }
 
+/*Mapa*/
+#map{
+  height: 100px;
+  width: 100px;
+}
+
 .icon-envelope:before {
     content: "\e900";
 }

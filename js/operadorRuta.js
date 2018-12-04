@@ -29,7 +29,7 @@ function subirImagen() {
     document.getElementById("imagen_Ruta").innerHTML += result;
   });
 }
-
+//Mapa
 
 
 //Llenar Combobox Alias
@@ -45,9 +45,7 @@ db.collection("EmpresaTransporte").onSnapshot((querySnapshot) =>{
     `
   });
 });
-
-
-
+//INSERTAR
 function insertar(){
   var alias = document.getElementById("idAlias").value;
   var ruta = document.getElementById("idRuta").value;
