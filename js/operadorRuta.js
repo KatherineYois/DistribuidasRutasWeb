@@ -6,6 +6,7 @@ firebase.initializeApp({
     storageBucket: "rutabusaqpdb.appspot.com"
 });
 
+var puntosMapa = markersEnvio();
 var db = firebase.firestore();
 var storage = firebase.storage().ref();
 var btnExaminar = document.getElementById("btnExaminar");
@@ -23,14 +24,11 @@ function subirImagen() {
     alert("Error: ", error);
   },function(){
     var downloadURL = uploadTask.snapshot.downloadURL;
-    alert("funciona" +  downloadURL);
     document.getElementById("idImagen").value = imagenSubir.name;
-    var result = '<br><img height="200" width="200" src="'+downloadURL+'"/>';
+    var result = '<br><img id="idImagenRuta" height="200" width="200" src="'+downloadURL+'"/>';
     document.getElementById("imagen_Ruta").innerHTML += result;
   });
 }
-//Mapa
-
 
 //Llenar Combobox Alias
 var selectAlias = document.getElementById("idAlias");
@@ -45,24 +43,44 @@ db.collection("EmpresaTransporte").onSnapshot((querySnapshot) =>{
     `
   });
 });
+
+var rPuntos;
+var idAliasET;
+function cambio(){
+  var a =document.getElementById("idAlias").value;
+  db.collection("EmpresaTransporte").where("Alias", "==", a)
+  .get()
+  .then(function(querySnapshot) {
+      querySnapshot.forEach(function(doc) {
+          console.log(doc.id, " => ", doc.data());
+          idAliasET = doc.id;
+          //rPuntos = db.collection('EmpresaTransporte').doc(idAliasET).collection("Puntos");
+          //console.log(rPuntos);
+      });
+  })
+  .catch(function(error) {
+      console.log("Error getting documents: ", error);
+  });
+}
+
+
 //INSERTAR
 function insertar(){
+  var idRutaPunto;
   var alias = document.getElementById("idAlias").value;
   var ruta = document.getElementById("idRuta").value;
   var codweb = document.getElementById("idCodWeb").value;
   var vigenciaInicio = new Date(document.getElementById("idVigenciaInicio").value);
   var vigenciaFin = new Date(document.getElementById("idVigenciaFin").value);
   var imagen = document.getElementById("idImagen").value;
-  var puntos =document.getElementById("idPuntos").value;
-  
+
   db.collection("Ruta").add({
       Alias: alias,
       Ruta: ruta,
       CodigoWeb: codweb,
       VigenciaInicio: vigenciaInicio,
       VigenciaFin: vigenciaFin,
-      Imagen: imagen,
-      Puntos: puntos
+      Imagen: imagen
   })
   .then(function(docRef) {
       document.getElementById('idAlias').value = '';
@@ -71,12 +89,38 @@ function insertar(){
       document.getElementById('idVigenciaInicio').value = '';
       document.getElementById('idVigenciaFin').value = '';
       document.getElementById('idImagen').value = '';
-      document.getElementById('idPuntos').value = '';
+      document.getElementById('idImagenRuta').removeAttribute('src');
+      document.getElementById('idImagenRuta').width = 0;
+      document.getElementById('idImagenRuta').height = 0;
+      agregarPuntos(docRef.id);
+      console.log("inserto");
   })
   .catch(function(error) {
       console.error("Error: ", error);
   });
+  
 }
+
+function agregarPuntos(puntosRuta){
+  for (var i = 0; i < puntosMapa.length; i++) {
+    puntosMapa[i];
+    var puntos = new firebase.firestore.GeoPoint(puntosMapa[i].position.lat(),puntosMapa[i].position.lng());
+    console.log(puntosMapa[i].position.lat(),puntosMapa[i].position.lng());
+      //db.collection('Ruta').doc(puntosRuta).collection("Puntos").add({
+      db.collection('Ruta').doc(puntosRuta).collection("Puntos").doc(String(i)).set({
+          Punto :puntos
+      })
+      .then(function(docRef) {
+          eliminarMarkers();
+      })
+      .catch(function(error) {
+          console.error("Error: ", error);
+      });
+  }
+ console.log("Se inserto puntos");
+}
+
+
 
 var tabla = document.getElementById('contenidoRuta');
 db.collection("Ruta").onSnapshot((querySnapshot) => {
@@ -91,7 +135,6 @@ db.collection("Ruta").onSnapshot((querySnapshot) => {
           <td>${doc.data().VigenciaInicio}</td>
           <td>${doc.data().VigenciaFin}</td>
           <td>${doc.data().Imagen}</td>
-          <td>${doc.data().Puntos}</td>
 
           <td><button class="button" onclick="eliminar('${doc.id}')">ELIMINAR</button></td>
           <td><button class="button" onclick="actualizar(
@@ -101,14 +144,13 @@ db.collection("Ruta").onSnapshot((querySnapshot) => {
           '${doc.data().CodigoWeb}',
           '${doc.data().VigenciaInicio}',
           '${doc.data().VigenciaFin}',
-          '${doc.data().Imagen}',
-          '${doc.data().Puntos}')">ACTUALIZAR</button></td>
+          '${doc.data().Imagen}')">ACTUALIZAR</button></td>
       </tr>
     `
     });
 });
 
-
+//ELIMINAR
 function eliminar(id){
   db.collection("Ruta").doc(id).delete().then(function() {
       console.log("Ruta eliminada");
@@ -117,6 +159,7 @@ function eliminar(id){
   });
 }
 
+//ACTUALIZAR
 function actualizar(alias,ruta,codweb,vigenciaInicio,vigenciaFin,imagen,puntos){
   document.getElementById('idAlias').value = alias;
   document.getElementById('idRuta').value = ruta;
@@ -167,7 +210,7 @@ function actualizar(alias,ruta,codweb,vigenciaInicio,vigenciaFin,imagen,puntos){
   }  
 }
 
-
+//Login
 var btnLogin = document.getElementById('btnLogin');
 var btnLogout = document.getElementById('btnLogout');
 var btnHome = document.getElementById('btnHome');

@@ -4,7 +4,7 @@
     <title>RutaBusAQP</title>
     <meta charset="utf-8"/>
     <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700|Allerta' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="css/rutabusaqpcss.css"/>
+    <link rel="stylesheet" href="css/rutabusaqp.css"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
   </head>
   <body>
@@ -44,9 +44,8 @@
             <ul>
               Alias:
               <li>
-                <select id="idAlias">
-                  <option>
-                  </option>
+                <select id="idAlias" onchange="cambio()">
+                  <option></option>
                 </select>
               <br></li>
               Ruta: <li><input type="text" name="rruta" id="idRuta"><br></li>
@@ -59,35 +58,18 @@
                   <input type="file" id="btnExaminar">
                 </label>
                 <div id ="imagen_Ruta">
-                  
                 </div>
               </li> 
-              Puntos: <li>
-                <!--<input type="text" name="rpuntos" id="idPuntos">
-                <label class="button" onclick="iniciarMapa()">Mostrar Mapa
-                </label>-->
-                <style>
-                  #map {
-                    height: 350px;
-                    width: 600px;
-                  }
-                </style>
-                <div id="map">
-                  
-                </div>
-                <script>
-                  var map;
-                  function initMap() {
-                    map = new google.maps.Map(document.getElementById('map'), {
-                      center: {lat: -16.3956747, lng: -71.5425671},
-                      zoom: 16
-                    });
-                  }
-                </script>
-
-              </li>    
+              Puntos: 
+                <br>
+                <button class="button" onclick="eliminarMarkers()">Borrar</button>
+                <br>
+                <br>
+                <div id="map"></div>
+                <script src="js/mapas.js"> </script>
 			     </ul>
         </div>
+        <br>
         <div align="center">
            <button class="button" id="btnInsertar" onclick="insertar()">INSERTAR</button>
         </div>
@@ -106,7 +88,6 @@
               <th>VIGENCIA INICIO</th>
               <th>VIGENCIA FIN</th>
               <th>IMAGEN</th>
-              <th>PUNTOS</th>
               <th>E</th>
               <th>A</th>
             </tr>
@@ -155,7 +136,7 @@
     <script src="js/operadorRuta.js"></script>
 
     <!--MAPA inicio-->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA09IEdRCzLM7gAz-haOE9KZIZ10K1IE90&callback=initMap"
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA5z2ntUcJZQpQeODDPN4F7ru_qdka6Il8&callback=initMap"
     async defer></script>
     <!--MAPA fin--> 
 
