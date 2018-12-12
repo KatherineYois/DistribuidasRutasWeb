@@ -51,7 +51,7 @@
               Ruta: <li><input type="text" name="rruta" id="idRuta"><br></li>
               Codigo Web: <li><input type="text" name="rcodigoweb" id="idCodWeb"><br></li>
               Vigencia Inicio: <li><input type="date" name="rvigenciainicio" id="idVigenciaInicio"
-                onclick = "delimitarFechas()" min = "2018-12-03"><br></li>
+               min = "2018-12-03"><br></li>
               Vigencia Fin: <li><input type="date" name="rvigenciafin" id="idVigenciaFin"><br></li> 
               Imagen: <li><input type="text" name="rimagen" id="idImagen">
                 <label class="button" >...
@@ -66,7 +66,7 @@
                 <br>
                 <br>
                 <div id="map"></div>
-                <script src="js/mapas.js"> </script>
+                <script src="js/operadorRutasMapa.js"> </script>
 			     </ul>
         </div>
         <br>
@@ -133,12 +133,12 @@
     <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-firestore.js"></script>
     <!--FIREBASE fin-->
 
-    <script src="js/operadorRuta.js"></script>
 
     <!--MAPA inicio-->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA5z2ntUcJZQpQeODDPN4F7ru_qdka6Il8&callback=initMap"
     async defer></script>
     <!--MAPA fin--> 
+    <script src="js/operadorRutas.js"></script>
 
     <script>
       var consulta = window.matchMedia('(max-width: 500px)');

@@ -6,31 +6,15 @@ firebase.initializeApp({
     storageBucket: "rutabusaqpdb.appspot.com"
 });
 
+//Mapa.js, llamado de markers
 var puntosMapa = markersEnvio();
 var db = firebase.firestore();
 var storage = firebase.storage().ref();
+
+//Boton Examinar
 var btnExaminar = document.getElementById("btnExaminar");
 
-//Imagenes
-btnExaminar.addEventListener("change",subirImagen,false);
-
-function subirImagen() {
-  var imagenSubir = btnExaminar.files[0];
-  var uploadTask = storage.child('rutas/'+imagenSubir.name).put(imagenSubir);
-
-  uploadTask.on('state_changed',function(snapshot){
-
-  },function(error){
-    alert("Error: ", error);
-  },function(){
-    var downloadURL = uploadTask.snapshot.downloadURL;
-    document.getElementById("idImagen").value = imagenSubir.name;
-    var result = '<br><img id="idImagenRuta" height="200" width="200" src="'+downloadURL+'"/>';
-    document.getElementById("imagen_Ruta").innerHTML += result;
-  });
-}
-
-//Llenar Combobox Alias
+//Llenar ComboBox de Alias de Empresas de Transporte
 var selectAlias = document.getElementById("idAlias");
 db.collection("EmpresaTransporte").onSnapshot((querySnapshot) =>{
   selectAlias.innerHTML = '';
@@ -44,18 +28,15 @@ db.collection("EmpresaTransporte").onSnapshot((querySnapshot) =>{
   });
 });
 
-var rPuntos;
-var idAliasET;
+//Reconocer cambio en el combobox
+var rPuntos, idET, idRazonSocialET, idAliasET;
 function cambio(){
   var a =document.getElementById("idAlias").value;
-  db.collection("EmpresaTransporte").where("Alias", "==", a)
-  .get()
-  .then(function(querySnapshot) {
+  db.collection("EmpresaTransporte").where("Alias", "==", a).get().then(function(querySnapshot) {
       querySnapshot.forEach(function(doc) {
-          console.log(doc.id, " => ", doc.data());
-          idAliasET = doc.id;
-          //rPuntos = db.collection('EmpresaTransporte').doc(idAliasET).collection("Puntos");
-          //console.log(rPuntos);
+          idET = doc.id;
+          idAliasET =doc.data().Alias;
+          idRazonSocialET = doc.data().RazonSocial;
       });
   })
   .catch(function(error) {
@@ -63,10 +44,29 @@ function cambio(){
   });
 }
 
+///IMAGENES 
+//Mostrar imagen
+btnExaminar.addEventListener("change",subirImagen,false);
+
+//Subir imagen
+function subirImagen() {
+  var imagenSubir = btnExaminar.files[0];
+  var uploadTask = storage.child('rutas/' + imagenSubir.name).put(imagenSubir);
+  uploadTask.on('state_changed',function(snapshot){
+  },function(error){
+    alert("Error: ", error);
+  },function(){
+    var downloadURL = uploadTask.snapshot.downloadURL;
+    document.getElementById("idImagen").value = imagenSubir.name;
+    var result = '<br><img id="idImagenRuta" height="200" width="200" src="'+downloadURL+'"/>';
+    document.getElementById("imagen_Ruta").innerHTML += result;
+  });
+}
 
 //INSERTAR
 function insertar(){
-  var idRutaPunto;
+  var etID = idET;
+  var razonSocialET = idRazonSocialET;
   var alias = document.getElementById("idAlias").value;
   var ruta = document.getElementById("idRuta").value;
   var codweb = document.getElementById("idCodWeb").value;
@@ -75,6 +75,8 @@ function insertar(){
   var imagen = document.getElementById("idImagen").value;
 
   db.collection("Ruta").add({
+      IDEmpresaTransporte: etID,
+      RazonSocialET: razonSocialET,
       Alias: alias,
       Ruta: ruta,
       CodigoWeb: codweb,
@@ -93,7 +95,7 @@ function insertar(){
       document.getElementById('idImagenRuta').width = 0;
       document.getElementById('idImagenRuta').height = 0;
       agregarPuntos(docRef.id);
-      console.log("inserto");
+      console.log("Insertó");
   })
   .catch(function(error) {
       console.error("Error: ", error);
@@ -103,11 +105,14 @@ function insertar(){
 
 function agregarPuntos(puntosRuta){
   for (var i = 0; i < puntosMapa.length; i++) {
+    //Transformando ID
+    var str = "" + i
+    var pad = "000"
+    var newI = pad.substring(0, pad.length - str.length) + str
     puntosMapa[i];
     var puntos = new firebase.firestore.GeoPoint(puntosMapa[i].position.lat(),puntosMapa[i].position.lng());
     console.log(puntosMapa[i].position.lat(),puntosMapa[i].position.lng());
-      //db.collection('Ruta').doc(puntosRuta).collection("Puntos").add({
-      db.collection('Ruta').doc(puntosRuta).collection("Puntos").doc(String(i)).set({
+      db.collection('Ruta').doc(puntosRuta).collection("Puntos").doc(newI).set({
           Punto :puntos
       })
       .then(function(docRef) {
@@ -119,8 +124,6 @@ function agregarPuntos(puntosRuta){
   }
  console.log("Se inserto puntos");
 }
-
-
 
 var tabla = document.getElementById('contenidoRuta');
 db.collection("Ruta").onSnapshot((querySnapshot) => {
@@ -167,7 +170,7 @@ function actualizar(alias,ruta,codweb,vigenciaInicio,vigenciaFin,imagen,puntos){
   document.getElementById('idVigenciaInicio').value = vigenciaInicio;
   document.getElementById('idVigenciaFin').value = vigenciaFin;
   document.getElementById('idImagen').value = imagen;
-  document.getElementById('idPuntos').value = puntos;
+  //document.getElementById('idPuntos').value = puntos;
 
 
   var boton = document.getElementById('btnInsertar');
@@ -180,7 +183,7 @@ function actualizar(alias,ruta,codweb,vigenciaInicio,vigenciaFin,imagen,puntos){
     var vigenciaInicio = document.getElementById("idVigenciaInicio").value;
     var vigenciaFin =document.getElementById("idVigenciaFin").value;
     var imagen =document.getElementById("idImagen").value;
-    var puntos =document.getElementById("idPuntos").value;
+    //var puntos =document.getElementById("idPuntos").value;
 
     return RutaRef.update({
       Alias: alias,
@@ -188,8 +191,8 @@ function actualizar(alias,ruta,codweb,vigenciaInicio,vigenciaFin,imagen,puntos){
       CodigoWeb: codweb,
       VigenciaInicio: vigenciaInicio,
       VigenciaFin: vigenciaFin,
-      Imagen: imagen,
-      Puntos: puntos
+      Imagen: imagen
+      //Puntos: puntos
     })
     .then(function() {
         console.log("Ruta actualizada");
@@ -200,9 +203,8 @@ function actualizar(alias,ruta,codweb,vigenciaInicio,vigenciaFin,imagen,puntos){
           document.getElementById('idVigenciaInicio').value = '';
           document.getElementById('idVigenciaFin').value = '';
           document.getElementById('idImagen').value = '';
-          document.getElementById('idPuntos').value = '';
-
-        boton.onclick=insertar;
+          //document.getElementById('idPuntos').value = '';
+        boton.onclick = insertar;
     })
     .catch(function(error) {
         console.error("Error: ", error);
@@ -210,6 +212,7 @@ function actualizar(alias,ruta,codweb,vigenciaInicio,vigenciaFin,imagen,puntos){
   }  
 }
 
+//INICIO DE SESIÓN
 //Login
 var btnLogin = document.getElementById('btnLogin');
 var btnLogout = document.getElementById('btnLogout');
@@ -246,13 +249,4 @@ function mostrarLogout(){
   btnLogout.style.display ="block";
   btnLogin.style.display = "none";
   btnHome.style.display = "none";
-}
-//VALIDACIONES
-//Fecha de Vigencia
-var cont = 0;
-function delimitarFechas(){
-  if(cont ==0){
-      alert("Recuerde que la fecha que coloque debe ser mayor a la fecha actual");
-      cont++;
-  }
 }

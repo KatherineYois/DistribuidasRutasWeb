@@ -44,7 +44,6 @@
           
             <ul>
               RUC: <li><input type="text" name="rruc" id ="idRuc" maxlength="11"
-                onclick="alert('Recuerda el RUC tiene 11 digitos numéricos')" 
                 onkeypress="return soloNumeros(event);"><br></li>
               Razon Social: <li><input type="text" name="rsocial" id="idRazonSocial"><br></li>
               Alias: <li><input type="text" name="ralias" id="idAlias"><br></li>
@@ -53,7 +52,7 @@
 			     </ul>
         </div>
         <div align="center">
-           <button class="button" id="btnInsertar" onclick="insertar()">INSERTAR</button>
+           <button class="button" id="btnInsertar" onclick="validarEmpTrans()">INSERTAR</button>
         </div>
 		    
         <br></br>
@@ -114,7 +113,7 @@
     <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-firestore.js"></script>
     <!--FIREBASE fin-->
 
-    <script src="js/operadorEmpTran.js"></script>
+    <script src="js/operadorEmpTrans.js"></script>
 
     <!--Por Revisar y decidir si se quedara
       en el proyecto o se eliminara-->

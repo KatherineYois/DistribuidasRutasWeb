@@ -4,7 +4,43 @@ firebase.initializeApp({
     projectId: "rutabusaqpdb"
 });
 
+//VALIDACIONES
+//RUC
+function soloNumeros(e){
+  var teclaNumero = window.event ? window.event.keyCode: e.which;
+  if((teclaNumero ==8 )||(teclaNumero == 46))
+    return true;
+  return /\d/.test(String.fromCharCode(teclaNumero));
+}
+
 var db = firebase.firestore();
+
+function validarEmpTrans(){
+  if(document.getElementById('idRuc').value=="" || document.getElementById("idRuc").value.length < 11){
+      alert("Ingrese el Ruc"); 
+      return;
+   }
+   else if(document.getElementById("idRazonSocial").value==""){
+      alert("Ingrese la Razon Social");
+       return;
+   }
+   else if(document.getElementById('idAlias').value==""){
+      alert("Ingrese el Alias");   
+      return;
+   }
+   else if(document.getElementById('idRepresentante').value==""){
+      alert("Ingrese el Representante");   
+      return;
+   }
+   else if(document.getElementById('idDireccion').value==""){
+      alert("Ingrese el Direccion");   
+      return;
+   }
+   else
+    document.getElementById("btnInsertar").disabled = false;
+    insertar();
+}
+
 
 function insertar(){
   var ruc = Number(document.getElementById("idRuc").value);
@@ -38,7 +74,6 @@ db.collection("EmpresaTransporte").onSnapshot((querySnapshot) => {
         console.log(`${doc.id} => ${doc.data()}`);
         tabla.innerHTML +=`
         <tr>
-          
           <td>${doc.data().Ruc}</td>
           <td>${doc.data().RazonSocial}</td> 	 
           <td>${doc.data().Alias}</td>
@@ -146,11 +181,3 @@ function mostrarLogout(){
 }
 
 
-//VALIDACIONES
-//RUC
-function soloNumeros(e){
-  var teclaNumero = window.event ? window.event.keyCode: e.which;
-  if((teclaNumero ==8 )||(teclaNumero == 46))
-    return true;
-  return /\d/.test(String.fromCharCode(teclaNumero));
-}
